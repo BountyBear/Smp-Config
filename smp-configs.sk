@@ -7,7 +7,7 @@ command /smp [<text>] [<text>] [<text>]:
 	permission: op
 	trigger:
 		if arg-1 is not set:
-			send "&f Correct Usage /smp [Pearls/Shields/Pots/Tier2Pots/Singel Mace/EnchantLimiter] [On/OFF]"
+			send "&f Correct Usage /smp [Pearls/Shields/Pots/Tier2Pots/Single Mace/EnchantLimiter] [On/OFF]"
 		if arg-1 is set:
 			# PEARLS
 			if arg-1 is "Pearls":
@@ -45,8 +45,8 @@ command /smp [<text>] [<text>] [<text>]:
 					if arg-2 is "OFF":
 						set {t2pots} to false
 						broadcast "&cTier 2 pots disabled!"
-			# Singel Mace
-			if arg-1 is "SingelMace":
+			# Single Mace
+			if arg-1 is "SingleMace":
 				if arg-2 is set:
 					if arg-2 is "ON":
 						set {macelimit} to true
@@ -98,8 +98,8 @@ on damage:
 
 
 on tab complete for "/smp":
-	set tab completions for position 1 to "Pearls" and "Shields" and "Potions" and "Tier2Pots" and "SingelMace" and "Pvp"
-	if tab arg-1 = "Pearls" or "Shields" or "Potions" or "Tier2Pots" or "SingelMace" or "Pvp":
+	set tab completions for position 1 to "Pearls" and "Shields" and "Potions" and "Tier2Pots" and "SingleMace" and "Pvp"
+	if tab arg-1 = "Pearls" or "Shields" or "Potions" or "Tier2Pots" or "SingleMace" or "Pvp":
 		set tab completions for position 2 to "ON" and "OFF"
 	if tab arg-1 = "EnchantLimiter":
 		set tab completions for position 2 to "Protection" and "Sharpness" and "NoLimits" and "NoEnchants"
