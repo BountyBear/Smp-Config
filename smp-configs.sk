@@ -143,8 +143,8 @@ on craft:
 			if {crafted} is false:
 				set {crafted} to true
 				broadcast "&%player% &b Has Crafted &5The Only Mace"
-		if {macelimit} is false:
-			stop
+			if {crafted} is true:
+				cancel event
 
 
 on shoot:
