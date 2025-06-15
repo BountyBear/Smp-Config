@@ -1,0 +1,108 @@
+# Config File For Smps
+
+
+
+
+command /smp [<text>] [<text>]:
+	permission: op
+	trigger:
+		if arg-1 is not set:
+			send "&f Correct Usage /smp [Pearls/Shields/Pots/Tier2Pots/Single Mace] [On/OFF]"
+		if arg-1 is set:
+			# PEARLS
+			if arg-1 is "Pearls":
+				if arg-2 is set:
+					if arg-2 is "ON":
+						set {pearl} to true
+						broadcast "&aEnder pearls enabled!"
+					if arg-2 is "OFF":
+						set {pearl} to false
+						broadcast "&cEnder pearls disabled!"
+			# SHIELDS
+			if arg-1 is "Shields":
+				if arg-2 is set:
+					if arg-2 is "ON":
+						set {shield} to true
+						broadcast "&aShields enabled!"
+					if arg-2 is "OFF":
+						set {shield} to false
+						broadcast "&cShields disabled!"
+			# Potion Brewing
+			if arg-1 is "Potions":
+				if arg-2 is set:
+					if arg-2 is "ON":
+						set {pots} to true
+						broadcast "&aPotions enabled!"
+					if arg-2 is "OFF":
+						set {pots} to false
+						broadcast "&cPotions disabled!"
+			# Tier 2 Pots
+			if arg-1 is "Tier2Pots":
+				if arg-2 is set:
+					if arg-2 is "On":
+						set {t2pots} to true
+						broadcast "&aTier 2 pots enabled!"
+					if arg-2 is "OFF":
+						set {t2pots} to false
+						broadcast "&cTier 2 pots disabled!"
+			# Singel Mace
+			if arg-1 is "SingelMace":
+				if arg-2 is set:
+					if arg-2 is "ON":
+						set {macelimit} to true
+						set {crafted} to false
+						broadcast "&aOnly 1 Mace Craftable"
+					if arg-2 is "OFF":
+						set {macelimit} to false
+						set {crafted} to false
+						broadcast "&cInfnite Mace enabled!"
+
+
+on tab complete for "/smp":
+	set tab completions for position 1 to "Pearls" and "Shields" and "Potions" and "Tier2Pots" and "SingelMace"
+	set tab completions for position 2 to "ON" and "OFF"
+
+				
+on craft:
+	if event-item is mace:
+		if {macelimit} is true:
+			if {crafted} is false:
+				set {crafted} to true
+				broadcast "&%player% &b Has Crafted &5The Only Mace"
+		if {macelimit} is false:
+			stop
+
+
+on shoot:
+	if event-projectile is ender pearl:
+		if {pearl} is false:
+			cancel event
+
+on inventory click:
+	if type of player's current inventory is brewing stand:
+		if event-item is glowstone dust:
+			if {t2pots} is false:
+				cancel event
+				send "&cNo Tier 2 Pots"
+	
+on craft:
+	if event-item is shield:
+		if {shield} is false:
+			cancel event
+
+on right click on brewing stand:
+	if {pots} is false:
+		cancel event
+
+on pickup:
+	if event-item is shield:
+		if {Shield} is false:
+			cancel event
+	if event-item is potion:
+		if {pots} is false:
+			cancel event
+
+on right click:
+	if player's tool is shield:
+		if {shield} is false:
+			cancel event
