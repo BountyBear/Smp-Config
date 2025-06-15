@@ -98,7 +98,7 @@ on damage:
 
 
 on tab complete for "/smp":
-	set tab completions for position 1 to "Pearls" and "Shields" and "Potions" and "Tier2Pots" and "SingleMace" and "Pvp"
+	set tab completions for position 1 to "Pearls" and "Shields" and "Potions" and "Tier2Pots" and "SingleMace" and "Pvp" and "EnchantLimiter"
 	if tab arg-1 = "Pearls" or "Shields" or "Potions" or "Tier2Pots" or "SingleMace" or "Pvp":
 		set tab completions for position 2 to "ON" and "OFF"
 	if tab arg-1 = "EnchantLimiter":
