@@ -99,13 +99,13 @@ on damage:
 
 on tab complete for "/smp":
 	set tab completions for position 1 to "Pearls" and "Shields" and "Potions" and "Tier2Pots" and "SingelMace" and "Pvp"
-	if tab-arg = "Pearls" or "Shields" or "Potions" or "Tier2Pots" or "SingelMace" or "Pvp":
+	if tab arg-1 = "Pearls" or "Shields" or "Potions" or "Tier2Pots" or "SingelMace" or "Pvp":
 		set tab completions for position 2 to "ON" and "OFF"
-	if tab-arg = "EnchantLimiter":
+	if tab arg-1 = "EnchantLimiter":
 		set tab completions for position 2 to "Protection" and "Sharpness" and "NoLimits" and "NoEnchants"
-	if tab-arg = "Protection":
+	if tab arg-2 = "Protection":
 		set tab completions for position 3 to "1" and "2" and "3" and "4"
-	if tab-arg = "Sharpness":
+	if tab arg-2 = "Sharpness":
 		set tab completions for position 3 to "1" and "2" and "3" and "4" and "5"
 
 every 1 second:
