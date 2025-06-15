@@ -11,3 +11,12 @@
 * Disable teir 2 pots
 * Disable Shields
 * Disable Pearls
+
+
+## New Additions
+
+* PVP
+* EnchantLimit
+- - Protection
+- - Sharpness
+* Disable Enchants Option
