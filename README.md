@@ -1,0 +1,13 @@
+# Smp Config FIle
+
+
+# Command
+* /smp [Pearls/Shields/Pots/Tier2Pots/Single Mace] [On/OFF]
+
+
+## Features
+* Single Mace
+* Disable all pots
+* Disable teir 2 pots
+* Disable Shields
+* Disable Pearls
