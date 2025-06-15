@@ -3,11 +3,11 @@
 
 
 
-command /smp [<text>] [<text>]:
+command /smp [<text>] [<text>] [<text>]:
 	permission: op
 	trigger:
 		if arg-1 is not set:
-			send "&f Correct Usage /smp [Pearls/Shields/Pots/Tier2Pots/Single Mace] [On/OFF]"
+			send "&f Correct Usage /smp [Pearls/Shields/Pots/Tier2Pots/Singel Mace/EnchantLimiter] [On/OFF]"
 		if arg-1 is set:
 			# PEARLS
 			if arg-1 is "Pearls":
@@ -56,13 +56,87 @@ command /smp [<text>] [<text>]:
 						set {macelimit} to false
 						set {crafted} to false
 						broadcast "&cInfnite Mace enabled!"
+			# Pvp
+			if arg-1 is "Pvp":
+				if arg-2 is set:
+					if arg-2 is "ON":
+						set {PVP} to true
+						broadcast "&aPvp enabled!"
+					if arg-2 is "OFF":
+						set {PVP} to false
+						broadcast "&cPvp disabled!"
+			# Enchant limiter
+			if arg-1 is "EnchantLimiter":
+				if arg-2 is set:
+					if arg-2 is "Protection":
+						if arg-3 is set:
+							set {prot} to arg-3 parsed as number
+							broadcast "&aMax Protection is Now &b%{prot}%!"
+					if arg-2 is "Sharpness":
+						if arg-3 is set:
+							set {sharp} to arg-3 parsed as number
+							broadcast "&aMax Sharpness is Now &b%{sharp}%!"
+					if arg-2 is "NoLimits":
+						delete {sharp}
+						delete {prot}
+						broadcast "&cNo Sharpness and Protection Limit!"
+					if arg-2 is "NoEnchants":
+						if arg-3 is set:
+							if arg-3 is "ON":
+								broadcast "&cEnchants Have been disable!"
+								set {NoEnchants} to true
+							if arg-3 is "OFF":
+								broadcast "&aEnchants have been enabled"
+
+
+
+on damage:
+	if victim is player:
+		if attacker is player:
+			if {PVP} is false:
+				cancel event
 
 
 on tab complete for "/smp":
-	set tab completions for position 1 to "Pearls" and "Shields" and "Potions" and "Tier2Pots" and "SingelMace"
-	set tab completions for position 2 to "ON" and "OFF"
+	set tab completions for position 1 to "Pearls" and "Shields" and "Potions" and "Tier2Pots" and "SingelMace" and "Pvp"
+	if tab-arg = "Pearls" or "Shields" or "Potions" or "Tier2Pots" or "SingelMace" or "Pvp":
+		set tab completions for position 2 to "ON" and "OFF"
+	if tab-arg = "EnchantLimiter":
+		set tab completions for position 2 to "Protection" and "Sharpness" and "NoLimits" and "NoEnchants"
+	if tab-arg = "Protection":
+		set tab completions for position 3 to "1" and "2" and "3" and "4"
+	if tab-arg = "Sharpness":
+		set tab completions for position 3 to "1" and "2" and "3" and "4" and "5"
 
+every 1 second:
+	loop all players:
+		loop all items in loop-player's inventory:
+			if {prot} is "1":
+				if loop-item is enchanted with protection 2 or protection 3 or protection 4:
+					enchant loop-item with protection 1
+			if {prot} is "2":
+				if loop-item is enchanted with protection 3 or protection 4:
+					enchant loop-item with protection 2
+			if {prot} is "3":
+				if loop-item is enchanted with protection 4:
+					enchant loop-item with protection 3
+			if {sharp} is "1":
+				if loop-item is enchanted with sharpness 2 or sharpness 3 or sharpness 4 or sharpness 5:
+					enchant loop-item with sharpness 1
+			if {sharp} is "2":
+				if loop-item is enchanted with sharpness 2 or sharpness 3 or sharpness 4 or sharpness 5:
+					enchant loop-item with sharpness 2
+			if {sharp} is "3":
+				if loop-item is enchanted with sharpness 3 or sharpness 4 or sharpness 5:
+					enchant loop-item with sharpness 3
+			if {sharp} is "4":
+				if loop-item is enchanted with sharpness 4 or sharpness 5:
+					enchant loop-item with sharpness 4
+			if {noenchants} is true:
+				disenchant loop-item
 				
+
+
 on craft:
 	if event-item is mace:
 		if {macelimit} is true:
