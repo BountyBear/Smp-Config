@@ -14,6 +14,10 @@
 * SMP SHOP
 
 
+# Made By 
+* BountyBear
+* Username : dont_ask_why2
+
 ## Features
 * Single Mace
 * Disable all pots
