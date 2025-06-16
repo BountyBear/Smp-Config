@@ -1,7 +1,7 @@
 # Smp Essentials
 
-# How To Use
-- Use Command
+## How To Use
+### Use Command
 * * /smp [Pearls/Shields/Pots/Tier2Pots/Single Mace] [On/OFF]
 
 
