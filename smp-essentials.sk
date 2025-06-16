@@ -104,7 +104,7 @@ on tab complete for "/smp":
 		set tab completions for position 2 to "ON" and "OFF"
 	if tab arg-1 = "EnchantLimiter":
 		set tab completions for position 2 to "Protection" and "Sharpness" and "NoLimits" and "NoEnchants"
-	if tab-arg-2 = "NoEnchants":
+	if tab arg-2 = "NoEnchants":
 		set tab completions for position 3 to "ON" and "OFF"
 	if tab arg-2 = "Protection":
 		set tab completions for position 3 to "1" and "2" and "3" and "4"
@@ -148,10 +148,6 @@ on craft:
 				broadcast "&%player% &b Has Crafted &5The Only Mace"
 			if {crafted} is true:
 				cancel event
-
-on craft:
-	if event-item is crafter:
-		cancel event
 	
 
 on shoot:
@@ -160,29 +156,48 @@ on shoot:
 			cancel event
 
 on inventory click:
-	if event-inventory = brewing stand:
-		if any:
-			click action is lmb
-			click action is rmb
-		then:
-			if player's cursor slot is glowstone dust:
-				if {t2pots} is false:
+	if type of player's current inventory is a brewing stand inventory:
+		if {t2pots} is false:
+			if any:
+				click action is lmb
+				click action is rmb
+			then:
+				if player's cursor slot is glowstone dust:
 					cancel event
 					send "&cNo Tier 2 Pots"
-		if click action is swap offhand:
-			if player's offhand item is glowstone dust:
-				cancel event
-		if click action is number key:
-			if player's inventory.getItem(event.getHotbarButton()) is glowstone dust:
-				cancel event
-	if event-inventory = brewing stand:
-		if any:
-			click action is shift+lmb
-			click action is shift+rmb
-		then:
-			if event-item is glowstone dust:
+			if click action is swap offhand:
+				if player's offhand item is glowstone dust:
+					cancel event
+			if click action is number key:
+				if player's inventory.getItem(event.getHotbarButton()) is glowstone dust:
+					cancel event
+	if type of player's current inventory is a brewing stand inventory:
+		if {t2pots} is false:
+			if any:
+				click action is shift+lmb
+				click action is shift+rmb
+			then:
+				if event-item is glowstone dust:
+					cancel event
+
+on inventory drag:
+	set {_slots::*} to event.getRawSlots()
+	loop {_slots::*}:
+		set {_slot} to "%loop-value%"
+		replace all "[" with "" in {_slot}
+		replace all "]" with "" in {_slot}
+		set {_list::*} to split {_slot} at ", "
+
+	loop {_list::*}:
+		set {_num} to loop-value parsed as integer
+		if type of player's current inventory is a brewing stand inventory:
+			if past event-item is glowstone dust:
 				cancel event
 
+
+on crafter craft:
+	if recipe result is mace:
+		cancel event
 
 on craft:
 	if event-item is shield:
