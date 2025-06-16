@@ -9,6 +9,11 @@
 * Skbee 3.6.3
 * skreflect 2.5.1
 
+# FROM
+* https://discord.gg/dv6Hp8P2EH
+* SMP SHOP
+
+
 ## Features
 * Single Mace
 * Disable all pots
