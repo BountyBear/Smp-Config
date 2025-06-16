@@ -1,8 +1,8 @@
-# Smp Config FIle
+# Smp Essentials
 
-
-# Command
-* /smp [Pearls/Shields/Pots/Tier2Pots/Single Mace] [On/OFF]
+# How To Use
+- Use Command
+* * /smp [Pearls/Shields/Pots/Tier2Pots/Single Mace] [On/OFF]
 
 
 ## Features
