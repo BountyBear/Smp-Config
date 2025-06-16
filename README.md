@@ -1,8 +1,8 @@
 # Smp Essentials
 
 ## How To Use
-### Use Command
-* * /smp [Pearls/Shields/Pots/Tier2Pots/Single Mace] [On/OFF]
+### Command
+* * /smp [Pearls/Shields/Pots/Tier2Pots/Single Mace/EnchantLimit] [On/OFF]
 
 
 ## Features
