@@ -4,6 +4,10 @@
 ### Command
 * * /smp [Pearls/Shields/Pots/Tier2Pots/Single Mace/EnchantLimit] [On/OFF]
 
+# Dependency
+* Skript 2.9.5
+* Skbee 3.6.3
+* skreflect 2.5.1
 
 ## Features
 * Single Mace
