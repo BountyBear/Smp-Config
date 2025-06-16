@@ -1,6 +1,5 @@
 # Config File For Smps
-
-
+# Made By BountyBear
 
 
 command /smp [<text>] [<text>] [<text>]:
@@ -88,8 +87,34 @@ command /smp [<text>] [<text>] [<text>]:
 							if arg-3 is "OFF":
 								broadcast "&aEnchants have been enabled"
 								set {NoEnchants} to true
-
-
+			# No netherite
+			if arg-1 is "Netherite":
+				if arg-2 is set:
+					if arg-2 is "ON":
+						set {neth} to true
+						broadcast "&aNetherite enabled!"
+					if arg-2 is "OFF":
+						set {neth} to false
+						broadcast "&cNetherite disabled!"
+			# ITEM CAP PART
+			if arg-1 is "itemCap":
+				if arg-2 is set:
+					if arg-2 is "GoldenApple":
+						if arg-3 is set:
+							set {_i} to arg-3 parsed as number
+							set {capgaps} to {_i}
+					if arg-2 is "GoldenCarrots":
+						if arg-3 is set:
+							set {_i} to arg-3 parsed as number
+							set {capcarrot} to {_i}
+					if arg-2 is "XpBottles":
+						if arg-3 is set:
+							set {_i} to arg-3 parsed as number
+							set {capbottles} to {_i}
+					if arg-2 is "EnderPearl":
+						if arg-3 is set:
+							set {_i} to arg-3 parsed as number
+							set {cappearl} to {_i}
 
 on damage:
 	if victim is player:
@@ -97,10 +122,9 @@ on damage:
 			if {PVP} is false:
 				cancel event
 
-
 on tab complete for "/smp":
-	set tab completions for position 1 to "Pearls" and "Shields" and "Potions" and "Tier2Pots" and "SingleMace" and "Pvp" and "EnchantLimiter"
-	if tab arg-1 = "Pearls" or "Shields" or "Potions" or "Tier2Pots" or "SingleMace" or "Pvp":
+	set tab completions for position 1 to "Pearls" and "Shields" and "Potions" and "Tier2Pots" and "SingleMace" and "Pvp" and "EnchantLimiter" and "Netherite" and "itemCap"
+	if tab arg-1 = "Pearls" or "Shields" or "Potions" or "Tier2Pots" or "SingleMace" or "Pvp" or "Netherite":
 		set tab completions for position 2 to "ON" and "OFF"
 	if tab arg-1 = "EnchantLimiter":
 		set tab completions for position 2 to "Protection" and "Sharpness" and "NoLimits" and "NoEnchants"
@@ -110,6 +134,9 @@ on tab complete for "/smp":
 		set tab completions for position 3 to "1" and "2" and "3" and "4"
 	if tab arg-2 = "Sharpness":
 		set tab completions for position 3 to "1" and "2" and "3" and "4" and "5"
+	if tab arg-1 is "itemCap":
+		set tab completions for position 2 to "GoldenApple" and "EnderPearl" and "XpBottles" and "GoldenCarrots"
+		set tab completions for position 3 to "number"
 
 every 1 second:
 	loop all players:
@@ -137,7 +164,12 @@ every 1 second:
 					enchant loop-item with sharpness 4
 			if {noenchants} is true:
 				disenchant loop-item
-				
+			if {neth} is false:
+				if loop-item is netherite ingot:
+					loop 64 times:
+						remove 1 netherite ingot from loop-player's inventory
+						wait 1 tick
+
 
 
 on craft:
@@ -146,9 +178,11 @@ on craft:
 			if {crafted} is false:
 				set {crafted} to true
 				broadcast "&%player% &b Has Crafted &5The Only Mace"
-			if {crafted} is true:
+			else:
 				cancel event
-	
+	if event-item is netherite ingot:
+		if {neth} is false:
+			cancel event
 
 on shoot:
 	if event-projectile is ender pearl:
@@ -197,7 +231,11 @@ on inventory drag:
 
 on crafter craft:
 	if recipe result is mace:
-		cancel event
+		if {macelimit} is true:
+			cancel event
+	if recipe result is netherite ingot:
+		if {neth} is false:
+			cancel event
 
 on craft:
 	if event-item is shield:
@@ -220,3 +258,62 @@ on right click:
 	if player's tool is shield:
 		if {shield} is false:
 			cancel event
+
+## ITEM CAP PART
+### DO NOT TOUCH
+
+options:
+	capGoldenApples: {capgaps}
+	capGoldenCarrots: {capcarrot}
+	capEnderPearls: {cappearl}
+	capCobwebs: {capwebs}
+	capxpbottles: {capbottles}
+
+variables:
+	{itemCapCooldown::%player%} = 0
+
+on player move:
+	if {itemCapCooldown::%player%} is greater than now:
+		stop
+
+	set {itemCapCooldown::%player%} to now + 5 seconds
+	
+	set {_goldenApples} to the amount of golden apple in player's inventory
+	if {_goldenApples} > {capgaps}:
+		set {_extra} to {_goldenApples} - {capgaps}
+		loop {_extra} times:
+			remove 1 golden apple from player's inventory
+			drop 1 golden apple at location of player
+		send "&cYou can't have more than {capgaps} Golden Apples! Dropping the extras." to player
+
+	set {_goldenCarrots} to the amount of golden carrot in player's inventory
+	if {_goldenCarrots} > {apcarrot}:
+		set {_extra} to {_goldenCarrots} - {apcarrot}
+		loop {_extra} times:
+			remove 1 golden carrot from player's inventory
+			drop 1 golden carrot at location of player
+		send "&cYou can't have more than {apcarrot} Golden Carrots! Dropping the extras." to player
+
+	set {_enderPearls} to the amount of ender pearl in player's inventory
+	if {_enderPearls} > {cappearl}:
+		set {_extra} to {_enderPearls} - {cappearl}
+		loop {_extra} times:
+			remove 1 ender pearl from player's inventory
+			drop 1 ender pearl at location of player
+		send "&cYou can't have more than {cappearl} Ender Pearls! Dropping the extras." to player
+
+	set {_cobwebs} to the amount of cobweb in player's inventory
+	if {_cobwebs} > {capCobwebs}:
+		set {_extra} to {_cobwebs} - {capCobwebs}
+		loop {_extra} times:
+			remove 1 cobweb from player's inventory
+			drop 1 cobweb at location of player
+		send "&cYou can't have more than {capCobwebs} Cobwebs! Dropping the extras." to player
+	
+	set {_bottles} to the amount of experience bottles in player's inventory
+	if {_bottles} > {capbottles}:
+		set {_extra} to {_bottles} - {capbottles}
+		loop {_extra} times:
+			remove 1 experience bottle from player's inventory
+			drop 1 experience bottle at location of player
+		send "&cYou can't have more than {capbottles} experience bottles! Dropping the extras." to player
