@@ -84,9 +84,10 @@ command /smp [<text>] [<text>] [<text>]:
 						if arg-3 is set:
 							if arg-3 is "ON":
 								broadcast "&cEnchants Have been disable!"
-								set {NoEnchants} to true
+								set {NoEnchants} to false
 							if arg-3 is "OFF":
 								broadcast "&aEnchants have been enabled"
+								set {NoEnchants} to true
 
 
 
@@ -103,6 +104,8 @@ on tab complete for "/smp":
 		set tab completions for position 2 to "ON" and "OFF"
 	if tab arg-1 = "EnchantLimiter":
 		set tab completions for position 2 to "Protection" and "Sharpness" and "NoLimits" and "NoEnchants"
+	if tab-arg-2 = "NoEnchants":
+		set tab completions for position 3 to "ON" and "OFF"
 	if tab arg-2 = "Protection":
 		set tab completions for position 3 to "1" and "2" and "3" and "4"
 	if tab arg-2 = "Sharpness":
@@ -146,6 +149,10 @@ on craft:
 			if {crafted} is true:
 				cancel event
 
+on craft:
+	if event-item is crafter:
+		cancel event
+	
 
 on shoot:
 	if event-projectile is ender pearl:
@@ -153,12 +160,30 @@ on shoot:
 			cancel event
 
 on inventory click:
-	if type of player's current inventory is brewing stand:
-		if event-item is glowstone dust:
-			if {t2pots} is false:
+	if event-inventory = brewing stand:
+		if any:
+			click action is lmb
+			click action is rmb
+		then:
+			if player's cursor slot is glowstone dust:
+				if {t2pots} is false:
+					cancel event
+					send "&cNo Tier 2 Pots"
+		if click action is swap offhand:
+			if player's offhand item is glowstone dust:
 				cancel event
-				send "&cNo Tier 2 Pots"
-	
+		if click action is number key:
+			if player's inventory.getItem(event.getHotbarButton()) is glowstone dust:
+				cancel event
+	if event-inventory = brewing stand:
+		if any:
+			click action is shift+lmb
+			click action is shift+rmb
+		then:
+			if event-item is glowstone dust:
+				cancel event
+
+
 on craft:
 	if event-item is shield:
 		if {shield} is false:
