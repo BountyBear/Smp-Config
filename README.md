@@ -10,7 +10,7 @@
 * skreflect 2.5.1
 
 # FROM
-* https://discord.gg/dv6Hp8P2EH
+* https://discord.gg/evokercord
 * SMP SHOP
 
 
